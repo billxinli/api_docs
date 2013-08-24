@@ -1,31 +1,43 @@
-%table.table.table-bordered.table-condensed#api-doc-table
-  
-  - if action['meta'].present? && action['meta'].is_a?(Hash)
-    - action['meta'].each do |k, v|
-      %tr
-        %th= k.to_s.titleize
-        %td= v
-        
+%table.table#api-doc-table
   %tr.info
     %th Request
     %td
-      %span.label.label-info= action['method']
+      %span.label.label-primary= action['method']
       %code= action['path']
-      
+
   - if action['headers'].present? && action['headers'].is_a?(Hash)
     %tr
       %th Headers
       %td= render :partial => 'request_params', :object => action['headers']
-  
-  - if action['params'].present? && action['params'].is_a?(Hash)
+                                  
+  - if action['params'].present? && action['params'].is_a?(Hash) 
+    - format = action['params']['format'] if action['params']['format'] 
+    - action['params'].delete('format')                         
+    - if action['params'].keys.length > 0
+      %tr
+        %th Parameters
+        %td 
+          %pre
+            = preserve do
+              :escaped
+                #{ JSON.pretty_generate(JSON.parse(action['params'].to_json)) rescue action['params'] }    
+
+  - if format
     %tr
-      %th Parameters
-      %td= render :partial => 'request_params', :object => action['params']
+      %th 
+        Format
+      %td
+        .label.label-primary= format        
+  - if action['meta'].present? && action['meta'].is_a?(Hash)
+    - action['meta'].each do |k, v|
+      %tr
+        %th= k.to_s.titleize
+        %td= v.html_safe
   
   %tr.info
     %th Response
     %td
-      %span.label{:class => (action['status'].to_s[0] == '4') ? 'label-important' : 'label-success'}
+      %span.label{:class => (action['status'].to_s[0] == '4') ? 'label-danger' : 'label-success'}
         = action['status']
   
   %tr
@@ -35,3 +47,5 @@
         = preserve do
           :escaped
             #{ JSON.pretty_generate(JSON.parse(action['body'])) rescue action['body'] }
+            
+%hr

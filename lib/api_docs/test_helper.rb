@@ -32,9 +32,9 @@ module ApiDocs::TestHelper
       # Assertions inside test block didn't fail. Preparing file
       # content to be written
       c = request.filtered_parameters['controller']
-      a = request.filtered_parameters['action']
+      a = request.filtered_parameters['action']    
     
-      file_path = File.expand_path("#{c.gsub('/', ':')}.yml", ApiDocs.config.docs_path)
+      file_path = File.expand_path("#{c.gsub('/', '!!')}.yml", ApiDocs.config.docs_path)
       params    = ApiDocs::TestHelper.api_deep_clean_params(params)
     
       # Marking response as an unique
