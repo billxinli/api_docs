@@ -17,5 +17,4 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
   
   s.add_dependency 'rails', '>=3.1.0'
-  s.add_dependency 'haml-rails'
 end
