@@ -1,29 +1,35 @@
 <div class="row">
-  <div class="col-md-3">
-    <ul class="nav">
-      <% @api_controllers.each_with_index do |(controller, actions), ci| %>
-          <li>
-            <%= controller.titleize.gsub('!!','::') %>
-          </li>
-          <% actions.each_with_index do |(action, data), ai| %>
-              <li>
-                <% tab_id = "#{controller.gsub(/\W/, '_')}_#{action}" %>
-                <%= link_to action.humanize.titleize, "##{tab_id}", :data => {:toggle => 'tab'} %>
-              </li>
-          <% end %>
-      <% end %>
-    </ul>
-  </div>
-  <div class="col-md-9">
-    <div class="tab-content">
+  <div class="col-md-12">
+    <div class="panel-group" id="accordion">
       <% @api_controllers.each_with_index do |(controller, actions), ci| %>
           <% actions.each_with_index do |(action, data), ai| %>
-              <% tab_id = "#{controller.gsub(/\W/, '_')}_#{action}" %>
-              <div class="tab-pane <%= (ci == 0 && ai == 0) ? 'active' : '' %>" id="<%= tab_id %>">
-                <% data.each do |key, data| %>
-                    <%= render :partial => 'action', :object => data %>
-                <% end %>
-              </div>
+              <% data.each do |key, data| %>
+                  <% tab_id = "#{controller.gsub(/\W/, '_')}_#{action}_#{data['method']}" %>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#<%= tab_id %>">
+                          <div class="row">
+                            <div class="col-md-1">
+                              <% if ['get'].include?(data['method'].downcase) %>
+                                  <span class="label label-success"><%= data['method'] %></span>
+                              <% else %>
+                                  <span class="label label-danger"><%= data['method'] %></span>
+                              <% end %>
+                            </div>
+                            <div class="col-md-6"><code><%= data['path'] %></code></div>
+                            <div class="col-md-4"><%= data['meta'][:description] %></div>
+                          </div>
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="<%= tab_id %>" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <%= render :partial => 'action', :object => data %>
+                      </div>
+                    </div>
+                  </div>
+              <% end %>
           <% end %>
       <% end %>
     </div>

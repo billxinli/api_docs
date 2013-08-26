@@ -5,8 +5,8 @@
   <title>API Docs</title>
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <%= stylesheet_link_tag "bootstrap.min.css", :media => "all" %>
-  <%= javascript_include_tag "http://code.jquery.com/jquery-1.10.1.min.js", "bootstrap.min.js" %>
+  <%= stylesheet_link_tag 'bootstrap.min', 'bootstrap_override', :media => "all" %>
+  <%= javascript_include_tag 'jquery-1.10.1.min.js', 'bootstrap.min.js' %>
 </head>
 
 <body>
@@ -14,7 +14,7 @@
   <%= yield %>
   <hr>
   <footer>
-    
+
   </footer>
 </div>
 </body>
