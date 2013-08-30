@@ -1,5 +1,5 @@
 <table class="table">
-  <tr>
+  <tr class="header-row">
     <th>Request</th>
     <td>
       <span class="label label-primary">
@@ -25,7 +25,7 @@
           <tr>
             <th>Parameters</th>
             <td>
-          <pre><%= "#{ JSON.pretty_generate(JSON.parse(action['params'].to_json)) rescue action['params'] }" %></pre>
+              <pre><%= "#{ JSON.pretty_generate(JSON.parse(action['params'].to_json)) rescue action['params'] }" %></pre>
             </td>
           </tr>
       <% end %>
@@ -45,16 +45,39 @@
   <% if action['meta'].present? && action['meta'].is_a?(Hash) %>
       <% action['meta'].each do |k, v| %>
           <tr>
-            <th>
-              <%= k.to_s.titleize %>
-            </th>
-            <td>
-              <%= v.html_safe %>
-            </td>
+            <% if v.is_a?(Array) && k == :params %>
+                <th>
+                  Complete parameters
+                </th>
+                <td>
+                  <table>
+                    <tr>
+                      <th class="span1">Parameter</th>
+                      <th class="span1">Required</th>
+                      <td></td>
+                    </tr>
+                    <% v.each do |row| %>
+                        <tr>
+                          <td><code><%= row[:param] %></code></td>
+                          <td><%= row[:required] %></td>
+                          <td><%= row[:description] %></td>
+                        </tr>
+                    <% end %>
+                  </table>
+                </td>
+            <% else %>
+                <th>
+                  <%= k.to_s.titleize %>
+                </th>
+
+                <td>
+                  <%= v.html_safe %>
+                </td>
+            <% end %>
           </tr>
       <% end %>
   <% end %>
-  <tr class="info">
+  <tr class="header-row">
     <th>Response</th>
     <td>
       <span class="label <%= action['status'].to_s[0] == '4' ? 'label-danger' : 'label-success' %>">
