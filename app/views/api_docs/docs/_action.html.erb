@@ -86,6 +86,14 @@
     </td>
   </tr>
   <tr>
+    <th>Content Type</th>
+    <td>
+      <div class="label label-primary">
+        <%= action['content_type'] %>
+      </div>
+    </td>
+  </tr>
+  <tr>
     <th>Body</th>
     <td>
       <pre><%= "#{ JSON.pretty_generate(JSON.parse(action['body'])) rescue action['body'] }" %></pre>

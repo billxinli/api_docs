@@ -56,7 +56,8 @@ module ApiDocs::TestHelper
         'headers'     => headers,
         'params'      => ApiDocs::TestHelper.api_deep_clean_params(params),
         'status'      => response.status,
-        'body'        => response.body
+        'body'        => response.body,
+        'content_type'=> response.content_type,
       }
       FileUtils.mkdir_p(File.dirname(file_path))
       File.open(file_path, 'w'){|f| f.write(data.to_yaml)}
