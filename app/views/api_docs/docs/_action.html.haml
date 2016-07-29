@@ -2,15 +2,12 @@
   %tr
     %th.col-lg-2 Request
     %td
-      %span.label.label-primary
-        = action['method']
-      %code
-        = action['path']
+      %span.label.label-primary= action['method']
+      %code= action['path']
   - if action['headers'].present? && action['headers'].is_a?(Hash)
     %tr
       %th.col-lg-2 Headers
-      %td
-        = render :partial => 'request_params', :object => action['headers']
+      %td= render partial: 'request_params', object: action['headers']
   - if action['params'].present? && action['params'].is_a?(Hash)
     - format = action['params']['format'] if action['params']['format']
     - action['params'].delete('format')
@@ -42,14 +39,12 @@
                   %td= row[:required]
                   %td= row[:description]
         - else
-          %th.col-lg-2
-            = k.to_s.titleize
-          %td
-            = v.html_safe
+          %th.col-lg-2= k.to_s.titleize
+          %td= v.html_safe
   %tr
     %th.col-lg-2 Response
     %td
-      %span{:class => "label #{action['status'].to_s[0] == '4' ? 'label-danger' : 'label-success'}"}= action['status']
+      %span{class: "label #{action['status'].to_s[0] == '4' ? 'label-danger' : 'label-success'}"}= action['status']
   - if action['content_type']
     %tr
       %th.col-lg-2 Content Type

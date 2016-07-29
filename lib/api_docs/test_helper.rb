@@ -7,7 +7,7 @@ module ApiDocs::TestHelper
     #     doc.description = 'Something for the docs'
     #     ... regular test code
     #   end
-    def api_call(method, path, params = {}, headers = {})
+    def api_call(method, path, params = {}, headers = {}, opt={})
       parsed_path = path.dup
       parsed_params = params.dup
 
@@ -18,7 +18,8 @@ module ApiDocs::TestHelper
       # Making actual test request. Based on the example above:
       #   get '/users/12345'
 
-      send(method, parsed_path, { params: parsed_params, as: :json, headers: headers })
+      opts = { params: parsed_params, headers: headers }.merge(opt)
+      send(method, parsed_path, opts)
 
       meta = Hash.new
       yield meta if block_given?
