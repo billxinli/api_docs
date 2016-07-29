@@ -1,51 +1,62 @@
-%table.table#api-doc-table
-  %tr.info
-    %th Request
+%table.table
+  %tr
+    %th.col-lg-2 Request
     %td
-      %span.label.label-primary= action['method']
-      %code= action['path']
-
+      %span.label.label-primary
+        = action['method']
+      %code
+        = action['path']
   - if action['headers'].present? && action['headers'].is_a?(Hash)
     %tr
-      %th Headers
-      %td= render :partial => 'request_params', :object => action['headers']
-                                  
-  - if action['params'].present? && action['params'].is_a?(Hash) 
-    - format = action['params']['format'] if action['params']['format'] 
-    - action['params'].delete('format')                         
+      %th.col-lg-2 Headers
+      %td
+        = render :partial => 'request_params', :object => action['headers']
+  - if action['params'].present? && action['params'].is_a?(Hash)
+    - format = action['params']['format'] if action['params']['format']
+    - action['params'].delete('format')
     - if action['params'].keys.length > 0
       %tr
-        %th Parameters
-        %td 
-          %pre
-            = preserve do
-              :escaped
-                #{ JSON.pretty_generate(JSON.parse(action['params'].to_json)) rescue action['params'] }    
-
+        %th.col-lg-2 Parameters
+        %td
+          %pre= "#{ JSON.pretty_generate(JSON.parse(action['params'].to_json)) rescue action['params'] }"
   - if format
     %tr
-      %th 
-        Format
+      %th.col-lg-2 Format
       %td
-        .label.label-primary= format        
+        .label.label-primary= format
   - if action['meta'].present? && action['meta'].is_a?(Hash)
     - action['meta'].each do |k, v|
       %tr
-        %th= k.to_s.titleize
-        %td= v.html_safe
-  
-  %tr.info
-    %th Response
-    %td
-      %span.label{:class => (action['status'].to_s[0] == '4') ? 'label-danger' : 'label-success'}
-        = action['status']
-  
+        - if v.is_a?(Array) && k == :params
+          %th.col-lg-2 Complete parameters
+          %td
+            %table.table
+              %tr
+                %th.col-lg-2 Parameter
+                %th.col-lg-2 Required
+                %th Description
+              - v.each do |row|
+                %tr
+                  %td
+                    %code= row[:param]
+                  %td= row[:required]
+                  %td= row[:description]
+        - else
+          %th.col-lg-2
+            = k.to_s.titleize
+          %td
+            = v.html_safe
   %tr
-    %th Body
+    %th.col-lg-2 Response
     %td
-      %pre
-        = preserve do
-          :escaped
-            #{ JSON.pretty_generate(JSON.parse(action['body'])) rescue action['body'] }
-            
-%hr
+      %span{:class => "label #{action['status'].to_s[0] == '4' ? 'label-danger' : 'label-success'}"}= action['status']
+  - if action['content_type']
+    %tr
+      %th.col-lg-2 Content Type
+      %td
+        .label.label-primary= action['content_type']
+  - if action['body'].present?
+    %tr
+      %th.col-lg-2 Body
+      %td
+        %pre= JSON.pretty_generate(JSON.parse(action['body'])) rescue action['body']

@@ -8,3 +8,4 @@ Gemfile.lock
 /test/dummy/log/
 /test/dummy/tmp/
 /test/dummy/doc/
+.idea

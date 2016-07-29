@@ -1,0 +1,10 @@
+%table.table
+  - request_params.each do |key, value|
+    %tr
+      %td.col-lg-2
+        %strong= key
+      %td
+        - if value.is_a?(Hash)
+          = render partial: 'request_params', object: value
+        - else
+          = value
