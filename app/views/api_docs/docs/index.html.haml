@@ -24,6 +24,10 @@
                       %span.label.label-danger= data['method']
                   .col-md-10
                     %code= data['path']
-              -#.panel-body
-                -#%p ...
+              .panel-body
+                - description = data.fetch('meta', {}).fetch(:description)
+                - if description
+                  - data.fetch('meta', {}).delete(:description)
+                  .description
+                    = Haml::Engine.new(description).render rescue description
               = render partial: 'action', object: data
