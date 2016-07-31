@@ -17,17 +17,21 @@
             .panel.panel-default
               .panel-heading
                 .row
-                  .col-md-2
+                  .col-md-2.col-xs-4
                     - if ['get'].include?(data['method'].downcase)
                       %span.label.label-success= data['method']
                     - else
                       %span.label.label-danger= data['method']
-                  .col-md-10
+                  .col-md-9.col-xs-6
                     %code= data['path']
+                  .col-md-1.col-xs-2
+                    %button.btn.btn-primary.btn-xs{aria:{controls: "collapse_#{ci}_#{ai}", expanded: 'false'}, data:{target: "#collapse_#{ci}_#{ai}", toggle: 'collapse'}, type:'button'}
+                      Expand
               .panel-body
                 - description = data.fetch('meta', {}).fetch(:description)
                 - if description
                   - data.fetch('meta', {}).delete(:description)
                   .description
                     = Haml::Engine.new(description).render rescue description
-              = render partial: 'action', object: data
+              .collapse{id: "collapse_#{ci}_#{ai}"}
+                = render partial: 'action', object: data
