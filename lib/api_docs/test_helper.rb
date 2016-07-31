@@ -22,7 +22,8 @@ module ApiDocs::TestHelper
       send(method, parsed_path, opts)
 
       meta = Hash.new
-      yield meta if block_given?
+      override = Hash.new
+      yield(meta, override) if block_given?
 
       # Not writing anything to the files unless there was a demand
       if ApiDocs.config.generate_on_demand
@@ -47,7 +48,7 @@ module ApiDocs::TestHelper
              end
 
       data[a] ||= {}
-      data[a][key] = {
+      gathered= {
         'meta' => meta,
         'method' => request.method,
         'path' => path,
@@ -57,6 +58,8 @@ module ApiDocs::TestHelper
         'body' => response.body,
         'content_type' => response.content_type,
       }
+
+      data[a][key] = gathered.merge(override)
       FileUtils.mkdir_p(File.dirname(file_path))
       File.open(file_path, 'w') { |f| f.write(data.to_yaml) }
     end

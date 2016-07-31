@@ -31,12 +31,14 @@
               %tr
                 %th.col-lg-2 Parameter
                 %th.col-lg-2 Required
+                %th.col-lg-2 Options
                 %th Description
               - v.each do |row|
                 %tr
                   %td
                     %code= row[:param]
-                  %td= row[:required]
+                  %td= row[:required] || 'No'
+                  %td= (row[:options] || []).join(', ')
                   %td= row[:description]
         - else
           %th.col-lg-2= k.to_s.titleize
