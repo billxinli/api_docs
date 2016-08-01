@@ -97,3 +97,19 @@ a.anchor {
     top: -70px;
     visibility: hidden;
 }
+
+.list-group-item:first-child, .list-group-item:last-child, .panel, .btn, .label {
+    border-radius: 0;
+}
+
+.list-group-item {
+    padding: 4px 6px;
+}
+
+.panel-heading {
+    padding: 4px 6px;
+}
+
+.list-group, .panel {
+    margin-bottom: 10px;
+}
