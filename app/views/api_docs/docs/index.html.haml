@@ -31,7 +31,6 @@
                 - description = data.fetch('meta', {}).fetch(:description)
                 - if description
                   - data.fetch('meta', {}).delete(:description)
-                  .description
-                    = Haml::Engine.new(description).render rescue description
+                  .description= @markdown.render(description.strip).html_safe
               .collapse{id: "collapse_#{ci}_#{ai}"}
                 = render partial: 'action', object: data
